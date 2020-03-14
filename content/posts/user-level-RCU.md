@@ -35,7 +35,7 @@ QSBR的总体思想就是, 写者要删除的时候, 向垃圾回收器注册一
 
 可以看到, QSBR是一种对reader非常友好的回收策略, 因为reader进入critical section的时候不需要拿任何锁, 可以想做多久就做多久, 只需要做完后进入quiescent state, 然后需要再使用RCU的时候调用一下`rcu_thread_online`即可, 也不需要去主动的通知写者什么, 由内核/垃圾回收器来负责回收。
 
-**Extra:**
+**Note:**
 
 对于对于有的应用, 可能只是偶尔用一下RCU, 但是一旦用起来会疯狂的用, 如果频繁的在quiescent state和其他状态之间进行切换, 会比较损耗性能(`rcu_quiescent_state()`开头和末尾各有一个`smp_mb()`, 而memory barrier是比较损耗性能的)。这些应用可以调用`rcu_thread_online`来表明我开始使用RCU了, 离开quiescent state(为什是离开? 因为quiescent state表明我没有任何对该对象的引用了, 但这里开始使用就产生了引用, 所以是从quiescent state离开), 然后调用`rcu_thread_offline`来更新状态(计数器), 但是不会离开quiescent state, 这样在`rcu_thread_offline`和下一个`rcu_thread_online`之间, reader不会进入quiescent state, 减少了额外切换操作的开销。
 
@@ -63,7 +63,7 @@ static inline void rcu_thread_online(void)
 
 不过值得注意的是, 上面的CSDN的文章也说了, QSBR只是一种回收策略, 还有其他的回收策略, 比如 *Epoch Based Reclamation(EBR)*, 关于EBR的文章可以看[concurrentkit的这篇presentation][5]。如果想看非常具体的回收策略技术细节的话, 可以看[Tom Hart的2005年在toronto的thesis][6]
 
-EBR的两外两篇文章可以看[剑客的这一篇][7], 也可以看[这篇讲无锁结构的][8](感觉中文版翻译的有点诡异, 建议直接看[英文版的][9])。个人感觉英文版的比较透彻, 但是剑客的那一篇最容易理解。大致思想如下, 假设有时间段$T=[t_1, t_2]$, 如果在t1之前进行逻辑删除的节点, 都可以在t2后进行实际删除(物理删除), 那么就称时间段T为一段grace period。
+EBR的两外两篇文章可以看[剑客的这一篇][7], 也可以看[这篇讲无锁结构的][8](感觉中文版翻译的有点诡异, 建议直接看[英文版的][9])。个人感觉英文版的比较透彻, 但是剑客的那一篇最容易理解。大致思想如下, 假设有时间段$$T=[t_1, t_2]$$, 如果在t1之前进行逻辑删除的节点, 都可以在t2后进行实际删除(物理删除), 那么就称时间段T为一段grace period。
 
 (插嘴: 关于QSBR和EBR的粗略对比可以看[Seiichi的stackoverflow的回答][11])
 
@@ -150,7 +150,7 @@ bool free(int epoch)
 
 这个try_gc内部实现和网上其他的一些实现提到的略有不同。
 
-其他的实现大部分都是检查`if ( all threads are in the epoch which m_nGlobalEpoch )`, 也就是必须所有的thread的epoch值都等于global_epoch的时候, 然后才释放(e + 1) % 3的元素(注意这里`(e + 1) % 3 == (e - 2) % 3`, 所以实质上就是释放epoch是$e - 2$的元素, 后面遇到`(e + 1) % 3`可以直接脑海里替换成`(e - 2) % 3`)。
+其他的实现大部分都是检查`if ( all threads are in the epoch which m_nGlobalEpoch )`, 也就是必须所有的thread的epoch值都等于global_epoch的时候, 然后才释放(e + 1) % 3的元素(注意这里`(e + 1) % 3 == (e - 2) % 3`, 所以实质上就是释放epoch是**`e - 2`**的元素, 后面遇到`(e + 1) % 3`可以直接脑海里替换成`(e - 2) % 3`)。
 
 但是这篇文章给的实现为了尽可能减小内存开销, 即使遇到遇到一个active的线程或者有线程的epoch值还没有更新到全局的epoch, 仍然释放当前`(e + 1) % 3`的元素, **注意这里的e还没有加1**, 也就是可能的释放现有的元素。那么为什么(e - 2)的元素现在可以释放了呢, 真的不会再有线程引用它了吗? **是的**, 但是原因还需要继续向下看。
 
@@ -252,7 +252,7 @@ static inline void rcu_read_unlock(void)
 
 所以需要做两次`flip_counter_and_wait`, 这样第二次调用`synchronize_rcu`的时候就可以检查到上次仍然有reader在critical secion里, 就会等待. **// TODO.** 但在第一次调用`synchronize_rcu`的时候不需要等待这个reader完成吗? 存疑
 
-**~~// TODO~~ 不过这里我有个问题不明白,如果说writer在做完两次`flip_counter_and_wait`后, 又来了一个reader怎么办, 这样岂不是reader和writer都进入了critical section?** ~~~这应该就是RCU的语义特性, 就是如果writer还在执行的时候不应该有reader执行(注意这里说的是不应该而不是不可能, 代码中只保证writer之前的reader已经做完了, 但并没有禁止writer做的时候不能有新的reader, 如果reader强行要进是会进的, 只是可能读到stale/inconsistent data, 而不像rwlock那样有很强的语义顺序性保证)~~~
+**不过这里有个问题,如果说writer在做完两次`flip_counter_and_wait`后, 又来了一个reader怎么办, 这样岂不是reader和writer都进入了critical section?** ~~~这应该就是RCU的语义特性, 就是如果writer还在执行的时候不应该有reader执行(注意这里说的是不应该而不是不可能, 代码中只保证writer之前的reader已经做完了, 但并没有禁止writer做的时候不能有新的reader, 如果reader强行要进是会进的, 只是可能读到stale/inconsistent data, 而不像rwlock那样有很强的语义顺序性保证)~~~
 
 RCU的语义确实比较弱化, 但是这里和语义没有太大关系, 之前说过了, writer采取的是COW的机制, 只是会延迟回收旧的对象, 其实在grace period开始之前, updater已经把指针更新成为了新的对象(通过原子操作就能实现), 所以在grace period开始后再开始的reader, 读到的是writer修改过的数据, 而在grace period之前开始的reader, 读到的则是旧的数据。具体的可以参考腾讯云社区的这篇[深入理解Linux的RCU机制][10]
 
@@ -272,10 +272,7 @@ RCU的语义确实比较弱化, 但是这里和语义没有太大关系, 之前�
 
 ## 3. Conclusion
 
-读这篇paper花了我好长时间, 因为之前对于RCU不是很了解, 所以耗费在背景知识上的时间很多, 加上一些锁算法的设计都比较精巧, 所以有时候完全理解算法细节也要花一番功夫, 加上有些地方和自己的理解有出入又要重新看。
-
-不过总体的收获还是很大的, 了解了RCU, 以及QSBR和EBR两种回收策略。感觉应该找时间revisit一下RCU, 顺便学习一些lock-free的知识。然后就可以开始了解C++中对应的库了, 为以后做准备。
-
+读这篇paper花了我好长时间, 因为之前对于RCU不是很了解, 所以耗费在背景知识上的时间很多, 加上一些锁算法的设计都比较精巧, 所以有时候完全理解算法细节也要花一番功夫, 加上有些地方和自己的理解有出入需要多看几遍，但总体而言还是非常值得的。
 
 
 [1]: https://lwn.net/Articles/573424/
