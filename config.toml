@@ -1,0 +1,10 @@
+baseURL = "https://whoiszihan.github.io"
+languageCode = "zh-cn"
+title = "Eat, shop, drink, think."
+theme = "beautifulhugo"
+
+showArchiveCount = true
+
+mathjax = true
+mathjaxEnableSingleDollar = true
+mathjaxEnableAutoNumber = false
