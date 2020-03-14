@@ -5,12 +5,7 @@ theme = "beautifulhugo"
 
 showArchiveCount = true
 
-mathjax = true
-mathjaxEnableSingleDollar = true
-mathjaxEnableAutoNumber = false
-
-# [taxonomies]
-#   tag = "tags"
+math = true # enable katex as it rends faster than mathjax
 
 # 主导航菜单
 [[menu.main]]
