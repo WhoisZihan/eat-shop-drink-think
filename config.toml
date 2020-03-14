@@ -13,9 +13,10 @@ mathjaxEnableAutoNumber = false
 #   tag = "tags"
 
 # 主导航菜单
-name="首页"
-url="/"
-weight="1"
+[[menu.main]]
+  name="首页"
+  url="/"
+  weight="1"
 [[menu.main]]
   name="文章"
   url="/posts"
