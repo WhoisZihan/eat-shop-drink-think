@@ -1,0 +1,23 @@
+sudo: false
+language: go
+go:
+    - "1.14"
+git:
+    depth: 1
+install:
+    - git clone https://github.com/gohugoio/hugo
+    - cd hugo; go install --tags extended; cd ..
+script:
+    - hugo
+deploy:
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    on:
+        branch: master
+    local_dir: public
+    repo: WhoisZihan/WhoisZihan.github.io
+    # fqdn: <custom-domain-if-needed>
+    target_branch: master
+    email: whois.zihan.yang@gmail.com
+    name: WhoisZihan
