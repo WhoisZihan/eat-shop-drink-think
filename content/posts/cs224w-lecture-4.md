@@ -6,9 +6,9 @@ categories: ["stanford courses"]
 draft: false
 ---
 
-> 课程主页是[http://web.stanford.edu/class/cs224w/][1], 视频在b站可以找到[CS224W 2019 Fall][2], youtube也有
+Lecture 4讲的是*Community Structure in Networks*，大致就是如何检测图中的community、overlapping community，以及评价方法。
 
-> 今天看了cs224w的lecture 4, 讲的是*Community Structure in Networks*，大致就是如何检测图中的community、overlapping community，以及评价方法
+<!--more-->
 
 # 1. What is Communities
 
@@ -120,6 +120,9 @@ BigCLAM就给出了这样一个方法。
 ![cs224w-lec4-10](/images/cs224w/cs224w-lec4-10.png)
 
 最后还提了一下求导加速的方法, 作为优化可以看看slides.
+
+
+> 课程主页是[http://web.stanford.edu/class/cs224w/][1], 视频在b站可以找到[CS224W 2019 Fall][2], youtube也有
 
 [1]: http://web.stanford.edu/class/cs224w/
 [2]: https://www.bilibili.com/video/av90106649?p=4

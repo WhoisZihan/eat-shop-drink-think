@@ -6,9 +6,9 @@ categories: ["stanford courses"]
 draft: false
 ---
 
-> 课程主页是[http://web.stanford.edu/class/cs224w/][1], 视频在b站可以找到[CS224W 2019 Fall][11], youtube也有
+Lecture 5讲的是Spectral Clustering, 就是如何利用spectral的方法对图进行一定的处理, 以便进行分类, 并使得切割方案和最优解尽可能接近。
 
-> 今天看了cs224w的lecture 5, 讲的是Spectral Clustering, 就是如何利用spectral的方法对图进行一定的处理, 以便进行分类, 并使得切割方案和最优解尽可能接近。
+<!--more-->
 
 # 1. Overview
 
@@ -269,6 +269,10 @@ $$
 \phi_M(S) \le 4 \sqrt{\phi_M^*}
 $$
 ![cs224w-lec5-18](/images/cs224w/cs224w-lec5-18.png)
+
+
+
+> 课程主页是[http://web.stanford.edu/class/cs224w/][1], 视频在b站可以找到[CS224W 2019 Fall][11], youtube也有
 
 
 

@@ -9,6 +9,8 @@ draft: false
 
 RCU在内核中使用非常广泛, 但在用户态很少有实现, 但用户态应用对于RCU的需求却是真实存在的。这篇论文的作者分析了QSBR-based RCU, general purpose RCU, 最后提出了他们自己的方案, signal-based RCU, 来将RCU实现在user space。
 
+<!--more-->
+
 ## 2. RCU overview
 
 RCU最适合read-most操作, 而且能忍受stale/inconsistent数据。但是对于需要consistent数据的read-most操作也能工作的很好。[URCU的作者在lwn发了一篇文章][1], 还写了一个库叫[liburcu.org][2]
