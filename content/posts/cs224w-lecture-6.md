@@ -61,25 +61,23 @@ $$
 
 算法就是初始化节点, 然后每轮重新计算节点的各个概率并更新。直到某一轮的时候所有节点的概率值和上一轮相比没有发生变化, 或者到达一个设定的最大迭代轮数时, 算法才会停止。
 
-![cs224w-lec6-1](/images/cs224w/cs224w-lec6-1.png)
+{{< figure alt="Figure 1" link="/images/cs224w/cs224w-lec6-1.png" >}}
 
-![cs224w-lec6-2](/images/cs224w/cs224w-lec6-2.png)
+{{< figure alt="Figure 2" link="/images/cs224w/cs224w-lec6-2.png" >}}
 
-![cs224w-lec6-3](/images/cs224w/cs224w-lec6-3.png)
+{{< figure alt="Figure 3" link="/images/cs224w/cs224w-lec6-3.png" >}}
 
-![cs224w-lec6-4](/images/cs224w/cs224w-lec6-4.png)
+{{< figure alt="Figure 4" link="/images/cs224w/cs224w-lec6-4.png" >}}
 
-![cs224w-lec6-5](/images/cs224w/cs224w-lec6-5.png)
+{{< figure alt="Figure 5" link="/images/cs224w/cs224w-lec6-5.png" >}}
 
-![cs224w-lec6-6](/images/cs224w/cs224w-lec6-6.png)
+{{< figure alt="Figure 6" link="/images/cs224w/cs224w-lec6-6.png" >}}
 
-![cs224w-lec6-7](/images/cs224w/cs224w-lec6-7.png)
+{{< figure alt="Figure 7" link="/images/cs224w/cs224w-lec6-7.png" >}}
 
-![cs224w-lec6-8](/images/cs224w/cs224w-lec6-8.png)
+{{< figure alt="Figure 8" link="/images/cs224w/cs224w-lec6-8.png" >}}
 
-![cs224w-lec6-9](/images/cs224w/cs224w-lec6-9.png)
-
-
+{{< figure alt="Figure 9" link="/images/cs224w/cs224w-lec6-9.png" >}}
 
 这种方法的不足之处在于
 
@@ -102,8 +100,7 @@ $$
 
 给了一个例子, 对于网页分类, 如果仅仅根据网页内容来分类而不考虑网页之间的互相关联, 那么两个内容相似的网站(例如一个盗版网站抄袭一个正版网站的大部分内容)就很可能会被给予同样的标签。下图是例子
 
-![cs224w-lec6-10](/images/cs224w/cs224w-lec6-10.png)
-
+{{< figure alt="Figure 10" link="/images/cs224w/cs224w-lec6-10.png" >}}
 
 
 解决办法就是不仅仅利用节点的词向量\\( w = word\  vectors\ of\ current\ page \\), 还利用相邻节点的标签信息
@@ -133,19 +130,19 @@ $$
 
 一直迭代到各个节点的标签不再发生变化, 或者达到了最大迭代轮数。注意**这里的收敛指的是节点的分类标签不再变化, 而不是节点的特征**
 
-![cs224w-lec6-11](/images/cs224w/cs224w-lec6-11.png)
+{{< figure alt="Figure 11" link="/images/cs224w/cs224w-lec6-11.png" >}}
 
-![cs224w-lec6-12](/images/cs224w/cs224w-lec6-12.png)
+{{< figure alt="Figure 12" link="/images/cs224w/cs224w-lec6-12.png" >}}
 
-![cs224w-lec6-13](/images/cs224w/cs224w-lec6-13.png)
+{{< figure alt="Figure 13" link="/images/cs224w/cs224w-lec6-13.png" >}}
 
-![cs224w-lec6-14](/images/cs224w/cs224w-lec6-14.png)
+{{< figure alt="Figure 14" link="/images/cs224w/cs224w-lec6-14.png" >}}
 
-![cs224w-lec6-15](/images/cs224w/cs224w-lec6-15.png)
+{{< figure alt="Figure 15" link="/images/cs224w/cs224w-lec6-15.png" >}}
 
-![cs224w-lec6-16](/images/cs224w/cs224w-lec6-16.png)
+{{< figure alt="Figure 16" link="/images/cs224w/cs224w-lec6-16.png" >}}
 
-![cs224w-lec6-17](/images/cs224w/cs224w-lec6-17.png)
+{{< figure alt="Figure 17" link="/images/cs224w/cs224w-lec6-17.png" >}}
 
 
 
@@ -184,27 +181,27 @@ $$
 
 其中\\( \gamma_1, \gamma_2 \\)是超参数, 分别调节用户评分的fairness和商品的goodness
 
-![cs224w-lec6-18](/images/cs224w/cs224w-lec6-18.png)
+{{< figure alt="Figure 18" link="/images/cs224w/cs224w-lec6-18.png" >}}
 
-![cs224w-lec6-19](/images/cs224w/cs224w-lec6-19.png)
+{{< figure alt="Figure 19" link="/images/cs224w/cs224w-lec6-19.png" >}}
 
-![cs224w-lec6-20](/images/cs224w/cs224w-lec6-20.png)
+{{< figure alt="Figure 20" link="/images/cs224w/cs224w-lec6-20.png" >}}
 
-![cs224w-lec6-21](/images/cs224w/cs224w-lec6-21.png)
+{{< figure alt="Figure 21" link="/images/cs224w/cs224w-lec6-21.png" >}}
 
 
 
 当然, 所有这些迭代公式都需要一个初始化的分数(不知道这是不是就是ml中所说的冷启动?), 默认都是1, 下面是个例子。
 
-![cs224w-lec6-22](/images/cs224w/cs224w-lec6-22.png)
+{{< figure alt="Figure 22" link="/images/cs224w/cs224w-lec6-22.png" >}}
 
-![cs224w-lec6-23](/images/cs224w/cs224w-lec6-23.png)
+{{< figure alt="Figure 23" link="/images/cs224w/cs224w-lec6-23.png" >}}
 
-![cs224w-lec6-24](/images/cs224w/cs224w-lec6-24.png)
+{{< figure alt="Figure 24" link="/images/cs224w/cs224w-lec6-24.png" >}}
 
-![cs224w-lec6-25](/images/cs224w/cs224w-lec6-25.png)
+{{< figure alt="Figure 25" link="/images/cs224w/cs224w-lec6-25.png" >}}
 
-![cs224w-lec6-26](/images/cs224w/cs224w-lec6-26.png)
+{{< figure alt="Figure 26" link="/images/cs224w/cs224w-lec6-26.png" >}}
 
 
 
@@ -239,17 +236,17 @@ $$
 
 **解决办法**: 每个节点监听从邻居节点发送过来的消息, 更新, 然后再传递给新的邻居。
 
-![cs224w-lec6-27](/images/cs224w/cs224w-lec6-27.png)
+{{< figure alt="Figure 27" link="/images/cs224w/cs224w-lec6-27.png" >}}
 
-![cs224w-lec6-28](/images/cs224w/cs224w-lec6-28.png)
+{{< figure alt="Figure 28" link="/images/cs224w/cs224w-lec6-28.png" >}}
 
-![cs224w-lec6-29](/images/cs224w/cs224w-lec6-29.png)
+{{< figure alt="Figure 29" link="/images/cs224w/cs224w-lec6-29.png" >}}
 
 感觉其实就是和DFS有点像, 只不过换成了图的版本。下面这个例子会更清楚
 
-![cs224w-lec6-30](/images/cs224w/cs224w-lec6-30.png)
+{{< figure alt="Figure 30" link="/images/cs224w/cs224w-lec6-30.png" >}}
 
-![cs224w-lec6-31](/images/cs224w/cs224w-lec6-31.png)
+{{< figure alt="Figure 31" link="/images/cs224w/cs224w-lec6-31.png" >}}
 
 
 
@@ -279,15 +276,15 @@ $$
 b_i(Y_i) = \alpha \phi_i(Y_i) \prod \limits_{j \in \mathcal{Ni}} m_{j \rightarrow i}(Y_i), \forall Y_i \in \mathcal{L}
 $$
 
-![cs224w-lec6-32](/images/cs224w/cs224w-lec6-32.png)
+{{< figure alt="Figure 32" link="/images/cs224w/cs224w-lec6-32.png" >}}
 
-![cs224w-lec6-33](/images/cs224w/cs224w-lec6-33.png)
+{{< figure alt="Figure 33" link="/images/cs224w/cs224w-lec6-33.png" >}}
 
 那么, 如果图里面有环呢? 会导致**来自不同子图的消息之间不再相互独立, 但是我们仍然可以运行BP算法**, 因为它是一个local算法, 因此它不会收到环的影响。至于环会不会对最后的结果准确度有影响, 这个可能就要看实际的场景了。
 
 下面是一个环可能导致出错的例子
 
-![cs224w-lec6-34](/images/cs224w/cs224w-lec6-34.png)
+{{< figure alt="Figure 34" link="/images/cs224w/cs224w-lec6-34.png" >}}
 
 上图中, belief在第一圈传播的时候还是对的, 但是到第二圈的时候经过求和T的值会加倍, 因此循环的次数越多, 标签为\\( T \\)的可能性就越大, 而这和原始的标签概率已经不同了。当然这是一个极端的例子, 大部分情况下环的影响是比较弱的。
 
