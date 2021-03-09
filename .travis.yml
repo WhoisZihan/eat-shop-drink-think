@@ -6,7 +6,7 @@ git:
     depth: 1
 install:
     - git clone https://github.com/gohugoio/hugo
-    - cd hugo; go install --tags extended; cd ..
+    - cd hugo; CGO_ENABLED=1 go install --tags extended; cd ..
 script:
     - hugo
 deploy:
